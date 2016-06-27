@@ -19,7 +19,7 @@ public class Engine {
         Map<String, PrinterTemplate> ptempmap = new HashMap<>();
         Map<String, Printer> pmap = new HashMap<>();
         List<String> iplist = new ArrayList<>();
-        Scanner in = new Scanner(new File("ip.txt"));
+        Scanner in = new Scanner(new File("/src/main/resources/ip.txt"));
         while (in.hasNextLine()) iplist.add(in.nextLine());
 
         //read config.json, create hashmap template\skeleton object with model and oid map
