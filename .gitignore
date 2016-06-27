@@ -2,3 +2,5 @@
 .idea/
 printswebapp.iml
 target/
+lib/
+src/main/resources/ip.txt
