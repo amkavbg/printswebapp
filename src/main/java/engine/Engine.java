@@ -13,8 +13,7 @@ import java.util.*;
  */
 public class Engine {
 
-    public Engine() throws IOException {
-
+    public Map<String,Printer> getPrintersInfo() throws IOException {
         SnmpQuerier snmpquerier = new SnmpQuerier();
         ObjectMapper m = new ObjectMapper();
         Map<String, PrinterTemplate> ptempmap = new HashMap<>();
@@ -76,6 +75,7 @@ public class Engine {
 
         //TODO:for future GUI, map of fully completed objects
         System.out.println("pmap is: " + pmap.size() + "\n " + pmap);
+        return pmap;
     }
 
     public Map<String,String> getRecognizeMap () {
