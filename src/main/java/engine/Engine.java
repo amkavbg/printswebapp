@@ -19,12 +19,12 @@ public class Engine {
         Map<String, PrinterTemplate> ptempmap = new HashMap<>();
         Map<String, Printer> pmap = new HashMap<>();
         List<String> iplist = new ArrayList<>();
-        Scanner in = new Scanner(new File("/src/main/resources/ip.txt"));
+        Scanner in = new Scanner(new File("src/main/resources/ip.txt"));
         while (in.hasNextLine()) iplist.add(in.nextLine());
 
         //read config.json, create hashmap template\skeleton object with model and oid map
         try {
-            JsonNode root = m.readTree(new File("config.json"));
+            JsonNode root = m.readTree(new File("src/main/resources/config.json"));
             JsonNode secondroot = root.path("Printers");
             for (JsonNode node : secondroot) {
                 PrinterTemplate printerTemplate = new PrinterTemplate();
@@ -73,12 +73,8 @@ public class Engine {
 //            }
 //        }
 
-        //TODO:for future GUI, map of fully completed objects
         System.out.println("pmap is: " + pmap.size() + "\n " + pmap);
         return pmap;
     }
 
-    public Map<String,String> getRecognizeMap () {
-        return null;
-    }
 }
