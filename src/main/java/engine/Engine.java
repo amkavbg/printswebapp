@@ -20,9 +20,9 @@ public class Engine {
         Map<String, Printer> pmap = new HashMap<>();
         List<String> iplist = new ArrayList<>();
         Scanner in = new Scanner(new File("src/main/resources/ip.txt"));
+
         while (in.hasNextLine()) iplist.add(in.nextLine());
 
-        //read config.json, create hashmap template\skeleton object with model and oid map
         try {
             JsonNode root = m.readTree(new File("src/main/resources/config.json"));
             JsonNode secondroot = root.path("Printers");
@@ -38,12 +38,10 @@ public class Engine {
                 }
                 ptempmap.put(printerTemplate.getModel(), printerTemplate);
             }
-            //System.out.println("Printer template map (ptempmap) contains: " + ptempmap.size() + " template object." + "\n " + ptempmap);   //
         } catch (JsonGenerationException e) {
             e.printStackTrace();
         }
 
-        //assign ip to object
         for (String ip : iplist) {
             try {
                 try {
@@ -60,6 +58,11 @@ public class Engine {
                 e.printStackTrace();
             }
         }
+        System.out.println("Engine worked and pmap is: " + pmap.size() + "\n " + pmap);
+        return pmap;
+    }
+
+}
 
 
 //        for (Printer printer : pmap.values()) {
@@ -72,9 +75,3 @@ public class Engine {
 //                );
 //            }
 //        }
-
-        System.out.println("pmap is: " + pmap.size() + "\n " + pmap);
-        return pmap;
-    }
-
-}
