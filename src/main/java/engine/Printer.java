@@ -58,6 +58,10 @@ public class Printer {
         else {}
     }
 
+    public Map<String,String> getParameters(){
+        return paramValues;
+    }
+
     public String getValueByKey(String key){
         return paramValues.get(key);
     }

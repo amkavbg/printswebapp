@@ -1,21 +1,18 @@
 <html>
+
 <head>
     <title>${title}</title>
 </head>
-<body>
-<center><h2>${tablename}</h2></center>
 
-<center>
-<table border="1">
-    <#if printers??>
+<body>
+    <center><h2>${tablename}</h2></center>
+
+    <center>
         <#list printers as prt>
-            <tr><td>
-                ${prt[prop]}
-            </td>
+            <p>${prt.ip}</p>
         </#list>
-    </#if>
-</table>
-</center>
+
+    </center>
 
 </body>
 </html>

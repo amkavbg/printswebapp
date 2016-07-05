@@ -44,17 +44,21 @@ public class MainServlet extends HttpServlet {
         cfg.setDefaultEncoding("UTF-8");
         cfg.setIncompatibleImprovements(new Version(2, 3, 20));
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-
         //  Load template
-        Template tpl = cfg.getTemplate("src/main/resources/templates/pmap.tpl");
-
+        Template tpl = cfg.getTemplate("src/main/resources/templates/printers.tpl");
         //  Data model
         Map<String, Object> input = new HashMap<String, Object>();
         input.put("title", "PRINTSWEBAPP 0.2a by tokido");
         input.put("tablename", "œ–»Õ“≈–€ ÷œ");
 
+        Map<String, Object> map = new HashMap<>();
 
-        input.put("printers", pmap);
+        for (Printer printer : pmap.values()) {
+                map.put(printer.getIp()+" - "+printer.getValueByKey("NetName"),printer.getParameters());
+        }
+
+        //input.put("printers", map);
+
 //      System.out.println("In method DOGET printer map: " + pmap.size() + "\n " + pmap);
 
         response.setContentType("text/html;charset=utf-8");
