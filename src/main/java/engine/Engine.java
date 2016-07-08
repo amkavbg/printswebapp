@@ -32,8 +32,7 @@ public class Engine {
         Scanner in = new Scanner(new File(realpath +"/"+"ip.txt"));
         while (in.hasNextLine()) iplist.add(in.nextLine());
 
-        //create template object
-        //return map
+        //create template object        //return map
         try {
             JsonNode root = m.readTree(new File(realpath +"/"+"config.json"));
             JsonNode secondroot = root.path("Printers");
