@@ -4,6 +4,7 @@ import engine.Engine;
 import engine.Printer;
 import freemarker.template.*;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -18,11 +19,15 @@ import java.util.Map;
 public class MainServlet extends HttpServlet {
 
     private Map<String, Printer> pmap = new HashMap<>();
-    //private Engine eng;
+    private Engine eng;
 
     @Override
     public void init() throws ServletException {
-        Engine eng = new Engine();
+
+        ServletContext context = getServletContext();
+        String realPath = context.getRealPath("/WEB-INF/classes/");
+
+        Engine eng = new Engine(realPath);
         try {
            pmap = eng.getPrintersInfo();
         } catch (IOException e) {
@@ -39,23 +44,29 @@ public class MainServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        //  Configure  //TODO: make downloading templates from directory [use setDirectoryForTemplateLoading]
+        //  Configure
         Configuration cfg = new Configuration();
         cfg.setDefaultEncoding("UTF-8");
         cfg.setIncompatibleImprovements(new Version(2, 3, 20));
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         cfg.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER);
+        cfg.setClassForTemplateLoading(this.getClass(),"/"+"templates");
         //  Load template
-        Template tpl = cfg.getTemplate("src/main/resources/templates/printers.tpl");
+        Template tpl = cfg.getTemplate("printers.tpl");
         //  Data model
         Map<String, Object> input = new HashMap<String, Object>();
+
         input.put("title", "PRINTSWEBAPP 0.2a by tokido");
         input.put("tablename", "ПРИНТЕРЫ ЦП");
+
         Map<String, Object> map = new HashMap<>();
+
         for (Printer printer : pmap.values()) {
                 map.put(printer.getIp()+" - "+printer.getValueByKey("NetName"),printer.getParameters());
         }
+
         input.put("printers", map);
+
         response.setContentType("text/html;charset=utf-8");
             try {
                 tpl.process(input,response.getWriter());
@@ -63,16 +74,6 @@ public class MainServlet extends HttpServlet {
                 e.printStackTrace();
             }
         }
-
-//        PrintWriter pw = response.getWriter();
-//        pw.println("<B>Список принтеров ЦП</B>");
-//        pw.println("<table border=1>");
-//        try {
-//            //TODO: write code to generate a spreadsheet with the data ready
-//        } catch (Exception e) {
-//            throw  new ServletException(e);
-//        }
-//        pw.println("</table>");
 
     public void destroy() {
         super.destroy();

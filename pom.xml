@@ -8,6 +8,10 @@
   <name>PrintsWEBAPP 0.2a - by tokido</name>
   <url>http://maven.apache.org</url>
 
+    <properties>
+
+    </properties>
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -67,7 +71,7 @@
 
 
   <build>
-    <finalName>PrintsWEBAPP-0.2a</finalName>
+    <finalName>PrintsWEBAPP</finalName>
       <plugins>
           <plugin>
               <groupId>org.apache.maven.plugins</groupId>

@@ -13,18 +13,29 @@ import java.util.*;
  */
 public class Engine {
 
+    public Engine(String realpath) {
+        this.realpath = realpath;
+    }
+
+    private String realpath;
+
     public Map<String,Printer> getPrintersInfo() throws IOException {
+        //SNMP init and configure
         SnmpQuerier snmpquerier = new SnmpQuerier();
         ObjectMapper m = new ObjectMapper();
-        Map<String, PrinterTemplate> ptempmap = new HashMap<>();
-        Map<String, Printer> pmap = new HashMap<>();
-        List<String> iplist = new ArrayList<>();
-        Scanner in = new Scanner(new File("src/main/resources/ip.txt"));
 
+        Map<String, PrinterTemplate> ptempmap = new HashMap<>();    //temporary map
+        Map<String, Printer> pmap = new HashMap<>();                //final map
+
+        //get ip from ip.txt
+        List<String> iplist = new ArrayList<>();
+        Scanner in = new Scanner(new File(realpath +"/"+"ip.txt"));
         while (in.hasNextLine()) iplist.add(in.nextLine());
 
+        //create template object
+        //return map
         try {
-            JsonNode root = m.readTree(new File("src/main/resources/config.json"));
+            JsonNode root = m.readTree(new File(realpath +"/"+"config.json"));
             JsonNode secondroot = root.path("Printers");
             for (JsonNode node : secondroot) {
                 PrinterTemplate printerTemplate = new PrinterTemplate();
@@ -49,7 +60,6 @@ public class Engine {
                     String pmodel = snmpquerier.send(ip, "1.3.6.1.2.1.25.3.2.1.3.1");
                     Printer p = new Printer(ptempmap.get(pmodel), ip, snmpquerier);
                     p.recognize();
-                    //p.print(); //TODO: write this method, or mb no need this
                     pmap.put(ip, p);
                 } finally {
                     snmpquerier.stop();
@@ -58,20 +68,7 @@ public class Engine {
                 e.printStackTrace();
             }
         }
-        System.out.println("Engine worked and pmap is: " + pmap.size() + "\n " + pmap);
         return pmap;
     }
 
 }
-
-
-//        for (Printer printer : pmap.values()) {
-//            System.out.println("Params for Printer [" + printer.getIp() + "] " + printer.getModel() +
-//                    " NetName :" + printer.getValueByKey("NetName"));
-//            for (String paramKey : printer.getParamKeys()) {
-//                String valueByKey = printer.getValueByKey(paramKey);
-//                System.out.println(
-//                        "        Param key: " + paramKey + " :" + valueByKey
-//                );
-//            }
-//        }
