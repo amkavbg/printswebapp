@@ -60,7 +60,7 @@ public class Engine {
                     Printer p = new Printer(ptempmap.get(pmodel), ip, snmpquerier);
                     p.recognize();
                     pmap.put(ip, p);
-                } finally {
+                    } finally {
                     snmpquerier.stop();
                 }
             } catch (IOException e) {
