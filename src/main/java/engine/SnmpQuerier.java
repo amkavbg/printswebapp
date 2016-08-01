@@ -1,5 +1,8 @@
 package engine;
 
+import exceptions.PrintusTrouble;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.snmp4j.*;
 import org.snmp4j.event.ResponseEvent;
 import org.snmp4j.mp.SnmpConstants;
@@ -9,15 +12,18 @@ import org.snmp4j.transport.DefaultUdpTransportMapping;
 import java.io.IOException;
 
 public class SnmpQuerier {
+
+    private static final Logger log = LoggerFactory.getLogger(SnmpQuerier.class);
     private String SNMP_COMMUNITY = "public";
     private int SNMP_RETRIES = 3;
-    private final long SNMP_TIMEOUT = 3000L;
+    private final long SNMP_TIMEOUT = 2000L;
     private Snmp snmp = null;
     private TransportMapping transport = null;
     protected volatile boolean started = false;
 
     public String send (String ip, String oid) throws IOException {
         if (!started) {
+            log.error("Service SNMP not started");
             throw new IllegalStateException("Not started");
         }
         // create the target
@@ -38,6 +44,7 @@ public class SnmpQuerier {
             }
             return event.getResponse().get(0).toValueString();
         } else {
+            log.error("Timeout exceeded for  "+ip);
             return "Timeout exceeded";
         }
     }

@@ -1,10 +1,15 @@
 package engine;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import exceptions.PrintusTrouble;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
@@ -17,9 +22,10 @@ public class Engine {
         this.realpath = realpath;
     }
 
+    private static final Logger log = LoggerFactory.getLogger(Engine.class);
     private String realpath;
 
-    public Map<String,Printer> getPrintersInfo() throws IOException {
+    public Map<String,Printer> getPrintersInfo() throws PrintusTrouble {
         //SNMP init and configure
         SnmpQuerier snmpquerier = new SnmpQuerier();
         ObjectMapper m = new ObjectMapper();
@@ -29,9 +35,13 @@ public class Engine {
 
         //get ip from ip.txt
         List<String> iplist = new ArrayList<>();
-        Scanner in = new Scanner(new File(realpath +"/"+"ip.txt"));
-        while (in.hasNextLine()) iplist.add(in.nextLine());
-
+        try {
+            Scanner in = new Scanner(new File(realpath + "/" + "ip.txt"));
+            while (in.hasNextLine()) iplist.add(in.nextLine());
+        } catch (FileNotFoundException e) {
+            log.error("IP.txt not found!");
+            throw new PrintusTrouble("Text file with ip not found");
+        }
         //create template object        //return map
         try {
             JsonNode root = m.readTree(new File(realpath +"/"+"config.json"));
@@ -50,6 +60,11 @@ public class Engine {
             }
         } catch (JsonGenerationException e) {
             e.printStackTrace();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            log.error("JSON config file not found!");
+            throw new PrintusTrouble("JSON config file not found!" + e);
         }
 
         for (String ip : iplist) {
@@ -60,11 +75,11 @@ public class Engine {
                     Printer p = new Printer(ptempmap.get(pmodel), ip, snmpquerier);
                     p.recognize();
                     pmap.put(ip, p);
-                    } finally {
-                    snmpquerier.stop();
+                              } finally {
+                                snmpquerier.stop();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new PrintusTrouble("Somethings went wrong with connect to device");
             }
         }
         return pmap;
