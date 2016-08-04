@@ -40,7 +40,7 @@ public class Engine {
             while (in.hasNextLine()) iplist.add(in.nextLine());
         } catch (FileNotFoundException e) {
             log.error("IP.txt not found!");
-            throw new PrintusTrouble("Text file with ip not found");
+            throw new PrintusTrouble("Text file with ip not found; "+e);
         }
         //create template object        //return map
         try {
@@ -79,6 +79,7 @@ public class Engine {
                                 snmpquerier.stop();
                 }
             } catch (IOException e) {
+                log.error("Somethings went wrong with connect to device - "+ip);
                 throw new PrintusTrouble("Somethings went wrong with connect to device");
             }
         }

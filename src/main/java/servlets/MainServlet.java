@@ -27,7 +27,7 @@ public class MainServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        log.info("Servlet start, init progress");
+        log.debug("Servlet start, init progress");
         Configuration cfg = new Configuration();
         cfg.setDefaultEncoding("UTF-8");
         cfg.setIncompatibleImprovements(new Version(2, 3, 20));
@@ -55,19 +55,8 @@ public class MainServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        //  Configure
-//        Configuration cfg = new Configuration();
-//        cfg.setDefaultEncoding("UTF-8");
-//        cfg.setIncompatibleImprovements(new Version(2, 3, 20));
-//        cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-//        cfg.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER);
-//        cfg.setClassForTemplateLoading(this.getClass(),"/"+"templates");
-//        //  Load template
-//        Template tpl = cfg.getTemplate("printers.tpl");
-
+        log.debug("«‡ÔÓÒ ‰‡ÌÌ˚ı. doGet method running.");
         //  Data model
-
         Map<String, Object> input = new HashMap<String, Object>();
         input.put("title", "PRINTSWEBAPP 0.2a by tokido");
         input.put("tablename", "œ–»Õ“≈–€ ÷œ");
@@ -77,8 +66,9 @@ public class MainServlet extends HttpServlet {
             for (Printer printer : eng.getPrintersInfo().values()) {
                     printermap.put(printer.getIp() + " - " + printer.getValueByKey("NetName"), printer.getParameters());
             }
-        } catch (PrintusTrouble printusTrouble) {
-            printusTrouble.printStackTrace();
+        } catch (PrintusTrouble e) {
+            log.error("Error populate printer");
+            e.printStackTrace();
         }
         input.put("printers", printermap);
         response.setContentType("text/html;charset=utf-8");
@@ -86,8 +76,10 @@ public class MainServlet extends HttpServlet {
             try {
                 this.tpl.process(input,response.getWriter());
             } catch (TemplateException e) {
+                log.error("Failed to create html with freemarker");
                 e.printStackTrace();
             }
+        log.debug("Work down. Get the page.");
         }
 
     public void destroy() {

@@ -1,6 +1,5 @@
 package engine;
 
-import exceptions.PrintusTrouble;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.snmp4j.*;
@@ -23,7 +22,7 @@ public class SnmpQuerier {
 
     public String send (String ip, String oid) throws IOException {
         if (!started) {
-            log.error("Service SNMP not started");
+            log.debug("Service SNMP not started");
             throw new IllegalStateException("Not started");
         }
         // create the target
@@ -44,7 +43,7 @@ public class SnmpQuerier {
             }
             return event.getResponse().get(0).toValueString();
         } else {
-            log.error("Timeout exceeded for  "+ip);
+            log.debug("Timeout exceeded for  "+ip);
             return "Timeout exceeded";
         }
     }

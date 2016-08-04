@@ -3,7 +3,7 @@ package exceptions;
 /**
  * Created by tokido on 19.07.2016.
  */
-public class PrintusTrouble extends Exception {
+public class PrintusTrouble extends RuntimeException {
 
     public PrintusTrouble(String s) {
         super(s);

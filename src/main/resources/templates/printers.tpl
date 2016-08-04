@@ -17,7 +17,7 @@
             top: 100px;
             position: relative;
 
-
+            border-radius
 
             -webkit-box-shadow: 2px 2px 12px 6px rgba(0,0,0,0.3);
             -moz-box-shadow: 2px 2px 12px 6px rgba(0,0,0,0.3);
@@ -25,7 +25,7 @@
             float: left;
             margin-left: 50px;
             margin-bottom: 50px;
-            overflow:hidden;
+
             z-index:1;
         }
 
@@ -37,28 +37,20 @@
             transform: scale(1.2, 1.2);
             z-index:3;
         }
-
-
         .pricing-table {
             max-width: 300px;
         }
-        table {
-            border-collapse: collapse;
-            border-spacing: 0;
-        }
         .pricing-table thead .plan .green {
-            color: #36611e;
+            color: white;
             text-shadow: 1px 1px 0px rgba(255,255,255, .2);
-            background: url(http://designmodo.com/demo/css3pricingtables/img/green_pattern.png) repeat-x 0 0;
+            background: -moz-linear-gradient(top,  rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 100%); /* FF3.6-15 */
+            background: -webkit-linear-gradient(top,  rgba(0,0,0,1) 0%,rgba(0,0,0,0.8) 100%); /* Chrome10-25,Safari5.1-6 */
+            background: linear-gradient(to bottom,  rgba(0,0,0,1) 0%,rgba(0,0,0,0.8) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#cc000000',GradientType=0 ); /* IE6-9 */
         }
         .pricing-table thead .plan th {
-            width: 210px;
-            height: 42px;
             padding: 15px 0;
-            text-align: center;
-            -webkit-border-radius: 2px;
-            -moz-border-radius: 2px;
-            border-radius: 2px;
+
         }
         .pricing-table thead .plan h2 {
             font-family: 'Arial Black', Arial, Helvetica, sans-serif;
@@ -81,16 +73,19 @@
         .pricing-table .clock-icon td, .pricing-table .basket-icon td, .pricing-table .star-icon td, .pricing-table .heart-icon td {
             background: #ffffff url(../img/icons.png) no-repeat 0 0;
         }
-
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
         .pricing-table tbody td {
             width: 50%;
             padding-top: 3px;
             padding-bottom: 3px;
             border-top: 1px solid #dedede;
             font-family: Helvetica, Arial, sans-serif;
-            font-size: 15px;
+            font-size: 11px;
             color: #828282;
-            text-indent: 25px;
+            text-indent: 15px;
         }
 
         .pricing-table tbody td:nth-child(-n+2) {
