@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import exceptions.PrintusTrouble;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +24,7 @@ public class Engine {
     private static final Logger log = LoggerFactory.getLogger(Engine.class);
     private String realpath;
 
-    public Map<String,Printer> getPrintersInfo() throws PrintusTrouble {
+    public Map<String,Printer> getPrintersInfo()  {
         //SNMP init and configure
         SnmpQuerier snmpquerier = new SnmpQuerier();
         ObjectMapper m = new ObjectMapper();
@@ -40,7 +39,7 @@ public class Engine {
             while (in.hasNextLine()) iplist.add(in.nextLine());
         } catch (FileNotFoundException e) {
             log.error("IP.txt not found!");
-            throw new PrintusTrouble("Text file with ip not found; "+e);
+            e.printStackTrace();
         }
         //create template object        //return map
         try {
@@ -64,7 +63,7 @@ public class Engine {
             e.printStackTrace();
         } catch (IOException e) {
             log.error("JSON config file not found!");
-            throw new PrintusTrouble("JSON config file not found!" + e);
+            e.printStackTrace();
         }
 
         for (String ip : iplist) {
@@ -80,7 +79,7 @@ public class Engine {
                 }
             } catch (IOException e) {
                 log.error("Somethings went wrong with connect to device - "+ip);
-                throw new PrintusTrouble("Somethings went wrong with connect to device");
+                e.printStackTrace();
             }
         }
         return pmap;

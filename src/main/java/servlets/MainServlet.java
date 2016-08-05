@@ -2,7 +2,6 @@ package servlets;
 
 import engine.Engine;
 import engine.Printer;
-import exceptions.PrintusTrouble;
 import freemarker.template.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +19,8 @@ import java.util.Map;
  * Created by tokido on 6/22/16.
  */
 public class MainServlet extends HttpServlet {
-    private static final Logger log = LoggerFactory.getLogger(MainServlet.class);
 
+    private static final Logger log = LoggerFactory.getLogger(MainServlet.class);
     private Engine eng;
     private Template tpl;
 
@@ -66,7 +65,7 @@ public class MainServlet extends HttpServlet {
             for (Printer printer : eng.getPrintersInfo().values()) {
                     printermap.put(printer.getIp() + " - " + printer.getValueByKey("NetName"), printer.getParameters());
             }
-        } catch (PrintusTrouble e) {
+        } catch (RuntimeException e) {
             log.error("Error populate printer");
             e.printStackTrace();
         }

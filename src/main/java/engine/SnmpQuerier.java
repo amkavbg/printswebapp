@@ -34,7 +34,6 @@ public class SnmpQuerier {
         // send the PDU
         ResponseEvent event = snmp.send(pdu, target, null);
         if (event != null) {
-            //return event.getResponse().get(0).toValueString();
             Variable var = event.getResponse().get(0).getVariable();
             if (var instanceof OctetString){
                 OctetString octetStr = (OctetString) var;
