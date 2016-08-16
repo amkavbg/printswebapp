@@ -74,7 +74,7 @@ public class MainServlet extends HttpServlet {
         } catch (TemplateException e) {
             log.error("Failed to create html with freemarker.",e);
         }
-        log.debug("Receive page to client.");
+        log.debug("Receive page to c lient.");
     }
 
     private Map<String, Object> generateTemplateData() {
