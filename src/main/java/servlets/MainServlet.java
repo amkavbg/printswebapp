@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -23,6 +24,9 @@ public class MainServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(MainServlet.class);
     private Engine eng;
     private Template tpl;
+    private long lastRefreshTimestamp;
+    private Map<String,Object> generatedTemplateInput;
+    private long interval=60000L;
 
     @Override
     public void init() throws ServletException {
@@ -37,48 +41,62 @@ public class MainServlet extends HttpServlet {
         try {
             tpl = cfg.getTemplate("printers.tpl");
         } catch (IOException e) {
-           log.error("Can't found template file, aborting");
+            log.error("Can't found template file, aborting");
         }
 
         ServletContext context = getServletContext();
         String realPath = context.getRealPath("/WEB-INF/classes/");
         this.eng = new Engine(realPath);
 
+        generatedTemplateInput=generateTemplateData();
+        lastRefreshTimestamp=new Date().getTime();
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-    super.doPost(request, response);
+        super.doPost(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         log.debug("doGet method running");
-        //  Data model
-        Map<String, Object> input = new HashMap<String, Object>();
+
+        if(new Date().getTime()-interval>lastRefreshTimestamp){
+            generatedTemplateInput=generateTemplateData();
+        }
+
+        response.setContentType("text/html;charset=utf-8");
+        try {
+            this.tpl.process(generatedTemplateInput, response.getWriter());
+        } catch (TemplateException e) {
+            log.error("Failed to create html with freemarker.\n" + e);
+            e.printStackTrace();
+        }
+        log.debug("Receive page to client.");
+    }
+
+    private Map<String, Object> generateTemplateData() {
+        Map<String, Object> input = new HashMap<>();
         input.put("title", "PRINTSWEBAPP 0.2b by tokido");
         input.put("tablename", "œ–»Õ“≈–€ ÷œ");
         Map<String, Object> printermap = new HashMap<>();
         try {
             for (Printer printer : eng.getPrintersInfo().values()) {
-                    printermap.put(printer.getIp() + " - " + printer.getValueByKey("NetName"), printer.getParameters());
+                printermap.put(printer.getIp() + " - " + printer.getValueByKey("NetName"), printer.getParameters());
             }
         } catch (RuntimeException e) {
-            log.error("Critical error populate printer. "+e);
+            log.error("Critical error populate printer. " + e);
             e.printStackTrace();
-            input.put("Error","Critical error populate printer.\n" + e); }
-            input.put("printers", printermap);
-            response.setContentType("text/html;charset=utf-8");
-            input.put("error","working without error");
-            try {
-                this.tpl.process(input,response.getWriter());
-            } catch (TemplateException e) {
-                log.error("Failed to create html with freemarker.\n"+e);
-                e.printStackTrace();
-            }
-        log.debug("Receive page to client.");
+            input.put("Error", "Critical error populate printer.\n" + e);
+        } catch (IOException e) {
+            log.error("Critical error",e);
         }
+
+        input.put("printers", printermap);
+        input.put("error", "working without error");
+        return input;
+    }
 
     public void destroy() {
         log.debug("Program receive destroy command.");

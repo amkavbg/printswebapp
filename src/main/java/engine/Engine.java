@@ -68,21 +68,39 @@ public class Engine {
 
         for (String ip : iplist) {
             try {
-                    snmpquerier.start();
-                    String pmodel = snmpquerier.send(ip, "1.3.6.1.2.1.25.3.2.1.3.1");
-                    if (pmodel == "null") { log.error("Printer with "+ip+"; do not answer. Drop his." ); }
-                    else if (!ptempmap.containsKey(pmodel)) { log.error("Device with "+ip+", not found in config.json.");}
-                    else {
-                        Printer p = new Printer(ptempmap.get(pmodel), ip, snmpquerier);
-                        p.recognize();
-                        pmap.put(ip, p);
-                        log.debug("Looks like all good with " + ip + " " + "[" + pmodel + "]."); }
-                  } catch (IOException e) {
-                log.error("Somethings went wrong with connect to device - "+ip+" \n"+e);
-                e.printStackTrace(); }
-                    finally { snmpquerier.stop(); }
+                snmpquerier.start();
+                String pmodel = snmpquerier.send(ip, "1.3.6.1.2.1.25.3.2.1.3.1");
+                if (!modelExists(ip, pmodel) || !templateExists(ptempmap,pmodel,ip)){
+                    continue;
+                }
+                Printer p = new Printer(ptempmap.get(pmodel), ip, snmpquerier);
+                p.recognize();
+                pmap.put(ip, p);
+                log.debug("Looks like all good with " + ip + " " + "[" + pmodel + "].");
+            } catch (IOException e) {
+                log.error("Somethings went wrong with connect to device - " + ip + " \n" + e);
+                e.printStackTrace();
+            } finally {
+                snmpquerier.stop();
+            }
         } //end for loop
         return pmap;
+    }
+
+    private boolean templateExists(Map<String, PrinterTemplate> ptempmap, String pmodel, String ip) {
+        if(!ptempmap.containsKey(pmodel)) {
+            log.error("Device with " + ip + ", not found in config.json.");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean modelExists(String ip, String pmodel) {
+        if (pmodel == null) {
+            log.error("Printer with " + ip + "; do not answer. Drop his.");
+            return false;
+        }
+        return true;
     }
 
 }

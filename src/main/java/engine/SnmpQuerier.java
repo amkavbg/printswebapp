@@ -42,8 +42,8 @@ public class SnmpQuerier {
             }
             return event.getResponse().get(0).toValueString();
             } else {
-            log.debug("Timeout exceeded for  "+ip+".");
-            return "null";
+            log.debug("Timeout exceeded for  " + ip + ".");
+            return null;
         }
     }
 
