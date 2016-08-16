@@ -39,7 +39,6 @@ public class Engine {
             while (in.hasNextLine()) iplist.add(in.nextLine());
         } catch (FileNotFoundException e) {
             log.error("IP.txt not found!");
-            e.printStackTrace();
         }
         //create template object        //return map
         try {
@@ -58,12 +57,11 @@ public class Engine {
                 ptempmap.put(printerTemplate.getModel(), printerTemplate);
             }
         } catch (JsonGenerationException e) {
-            e.printStackTrace();
+            log.error("Critical json error.",e);
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            log.error("Json processing error.",e);
         } catch (IOException e) {
             log.error("JSON config file not found!");
-            e.printStackTrace();
         }
 
         for (String ip : iplist) {
@@ -79,7 +77,6 @@ public class Engine {
                 log.debug("Looks like all good with " + ip + " " + "[" + pmodel + "].");
             } catch (IOException e) {
                 log.error("Somethings went wrong with connect to device - " + ip + " \n" + e);
-                e.printStackTrace();
             } finally {
                 snmpquerier.stop();
             }

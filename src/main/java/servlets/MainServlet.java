@@ -25,12 +25,12 @@ public class MainServlet extends HttpServlet {
     private Engine eng;
     private Template tpl;
     private long lastRefreshTimestamp;
-    private Map<String,Object> generatedTemplateInput;
-    private long interval=60000L;
+    private Map<String, Object> generatedTemplateInput;
+    private long interval = 60000L;
 
     @Override
     public void init() throws ServletException {
-        log.debug("Servlet start, init progress");
+        log.debug("Servlet start. Init in progress");
         Configuration cfg = new Configuration();
         cfg.setDefaultEncoding("UTF-8");
         cfg.setIncompatibleImprovements(new Version(2, 3, 20));
@@ -48,8 +48,9 @@ public class MainServlet extends HttpServlet {
         String realPath = context.getRealPath("/WEB-INF/classes/");
         this.eng = new Engine(realPath);
 
-        generatedTemplateInput=generateTemplateData();
-        lastRefreshTimestamp=new Date().getTime();
+        generatedTemplateInput = generateTemplateData();
+        lastRefreshTimestamp = new Date().getTime();
+        log.debug("Servlet running. Init finish.");
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -60,18 +61,18 @@ public class MainServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        log.debug("doGet method running");
+        log.debug("doGet running");
 
-        if(new Date().getTime()-interval>lastRefreshTimestamp){
-            generatedTemplateInput=generateTemplateData();
+        if (new Date().getTime() - interval > lastRefreshTimestamp) {
+            generatedTemplateInput = generateTemplateData();
+            generatedTemplateInput.put("error","Work done.");
         }
 
         response.setContentType("text/html;charset=utf-8");
         try {
             this.tpl.process(generatedTemplateInput, response.getWriter());
         } catch (TemplateException e) {
-            log.error("Failed to create html with freemarker.\n" + e);
-            e.printStackTrace();
+            log.error("Failed to create html with freemarker.",e);
         }
         log.debug("Receive page to client.");
     }
@@ -87,10 +88,9 @@ public class MainServlet extends HttpServlet {
             }
         } catch (RuntimeException e) {
             log.error("Critical error populate printer. " + e);
-            e.printStackTrace();
             input.put("Error", "Critical error populate printer.\n" + e);
         } catch (IOException e) {
-            log.error("Critical error",e);
+            log.error("Critical error", e);
         }
 
         input.put("printers", printermap);
