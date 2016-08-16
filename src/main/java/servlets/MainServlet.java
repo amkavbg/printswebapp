@@ -54,34 +54,34 @@ public class MainServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        log.debug("«‡ÔÓÒ ‰‡ÌÌ˚ı. doGet method running.");
+        log.debug("doGet method running");
         //  Data model
         Map<String, Object> input = new HashMap<String, Object>();
-        input.put("title", "PRINTSWEBAPP 0.2a by tokido");
+        input.put("title", "PRINTSWEBAPP 0.2b by tokido");
         input.put("tablename", "œ–»Õ“≈–€ ÷œ");
         Map<String, Object> printermap = new HashMap<>();
-
         try {
             for (Printer printer : eng.getPrintersInfo().values()) {
                     printermap.put(printer.getIp() + " - " + printer.getValueByKey("NetName"), printer.getParameters());
             }
         } catch (RuntimeException e) {
-            log.error("Error populate printer");
+            log.error("Critical error populate printer. "+e);
             e.printStackTrace();
-        }
-        input.put("printers", printermap);
-        response.setContentType("text/html;charset=utf-8");
-
+            input.put("Error","Critical error populate printer.\n" + e); }
+            input.put("printers", printermap);
+            response.setContentType("text/html;charset=utf-8");
+            input.put("error","working without error");
             try {
                 this.tpl.process(input,response.getWriter());
             } catch (TemplateException e) {
-                log.error("Failed to create html with freemarker");
+                log.error("Failed to create html with freemarker.\n"+e);
                 e.printStackTrace();
             }
-        log.debug("Work down. Get the page.");
+        log.debug("Receive page to client.");
         }
 
     public void destroy() {
+        log.debug("Program receive destroy command.");
         super.destroy();
     }
 }

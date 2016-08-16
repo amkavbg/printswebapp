@@ -33,7 +33,7 @@ public class SnmpQuerier {
         pdu.setType(PDU.GET);
         // send the PDU
         ResponseEvent event = snmp.send(pdu, target, null);
-        if (event != null) {
+        if (event.getResponse() != null) {
             Variable var = event.getResponse().get(0).getVariable();
             if (var instanceof OctetString){
                 OctetString octetStr = (OctetString) var;
@@ -41,9 +41,9 @@ public class SnmpQuerier {
                 return new String(bytes,"UTF-8");
             }
             return event.getResponse().get(0).toValueString();
-        } else {
+            } else {
             log.debug("Timeout exceeded for  "+ip+".");
-            return "Timeout exceeded";
+            return "null";
         }
     }
 

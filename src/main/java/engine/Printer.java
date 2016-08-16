@@ -42,8 +42,10 @@ public class Printer {
         for (Map.Entry<String, String> entry : paramValues.entrySet()) {
             String key = entry.getKey();
             String parm = entry.getValue();
-            if (key.equals(maxkey)) max = parm;
-            if (key.equals(curkey)) cur = parm;
+            if (key.equals(maxkey))
+                max = parm;
+            if (key.equals(curkey))
+                cur = parm;
         }
         realtonerlvl(max,cur);
     }

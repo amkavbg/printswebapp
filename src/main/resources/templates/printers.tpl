@@ -125,6 +125,7 @@
     </#list>
 
     </center>
-
+    <center>  <input type="submit" name="act" value="SEND"><input type="reset" value="RESET">
+    <center><h2${error}</center>
 </body>
 </html>

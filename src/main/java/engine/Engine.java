@@ -24,7 +24,7 @@ public class Engine {
     private static final Logger log = LoggerFactory.getLogger(Engine.class);
     private String realpath;
 
-    public Map<String,Printer> getPrintersInfo()  {
+    public Map<String,Printer> getPrintersInfo() throws IOException {
         //SNMP init and configure
         SnmpQuerier snmpquerier = new SnmpQuerier();
         ObjectMapper m = new ObjectMapper();
@@ -68,20 +68,20 @@ public class Engine {
 
         for (String ip : iplist) {
             try {
-                try {
                     snmpquerier.start();
                     String pmodel = snmpquerier.send(ip, "1.3.6.1.2.1.25.3.2.1.3.1");
-                    Printer p = new Printer(ptempmap.get(pmodel), ip, snmpquerier);
-                    p.recognize();
-                    pmap.put(ip, p);
-                              } finally {
-                                snmpquerier.stop();
-                }
-            } catch (IOException e) {
-                log.error("Somethings went wrong with connect to device - "+ip);
-                e.printStackTrace();
-            }
-        }
+                    if (pmodel == "null") { log.error("Printer with "+ip+"; do not answer. Drop his." ); }
+                    else if (!ptempmap.containsKey(pmodel)) { log.error("Device with "+ip+", not found in config.json.");}
+                    else {
+                        Printer p = new Printer(ptempmap.get(pmodel), ip, snmpquerier);
+                        p.recognize();
+                        pmap.put(ip, p);
+                        log.debug("Looks like all good with " + ip + " " + "[" + pmodel + "]."); }
+                  } catch (IOException e) {
+                log.error("Somethings went wrong with connect to device - "+ip+" \n"+e);
+                e.printStackTrace(); }
+                    finally { snmpquerier.stop(); }
+        } //end for loop
         return pmap;
     }
 
