@@ -66,6 +66,7 @@ public class MainServlet extends HttpServlet {
         if (new Date().getTime() - interval > lastRefreshTimestamp) {
             generatedTemplateInput = generateTemplateData();
             generatedTemplateInput.put("error","Work done.");
+            lastRefreshTimestamp = new Date().getTime();
         }
 
         response.setContentType("text/html;charset=utf-8");
@@ -74,7 +75,7 @@ public class MainServlet extends HttpServlet {
         } catch (TemplateException e) {
             log.error("Failed to create html with freemarker.",e);
         }
-        log.debug("Receive page to c lient.");
+        log.debug("Receive page to client.");
     }
 
     private Map<String, Object> generateTemplateData() {

@@ -126,6 +126,6 @@
 
     </center>
     <center>  <input type="submit" name="act" value="SEND"><input type="reset" value="RESET">
-    <center><h2${error}</center>
+    <center><h2>${error}</h2></center>
 </body>
 </html>

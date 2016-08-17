@@ -24,15 +24,11 @@ public class Engine {
     private static final Logger log = LoggerFactory.getLogger(Engine.class);
     private String realpath;
 
-    public Map<String,Printer> getPrintersInfo() throws IOException {
-        //SNMP init and configure
+    public Map<String, Printer> getPrintersInfo() throws IOException {
         SnmpQuerier snmpquerier = new SnmpQuerier();
         ObjectMapper m = new ObjectMapper();
-
         Map<String, PrinterTemplate> ptempmap = new HashMap<>();    //temporary map
         Map<String, Printer> pmap = new HashMap<>();                //final map
-
-        //get ip from ip.txt
         List<String> iplist = new ArrayList<>();
         try {
             Scanner in = new Scanner(new File(realpath + "/" + "ip.txt"));
@@ -40,9 +36,9 @@ public class Engine {
         } catch (FileNotFoundException e) {
             log.error("IP.txt not found!");
         }
-        //create template object        //return map
+
         try {
-            JsonNode root = m.readTree(new File(realpath +"/"+"config.json"));
+            JsonNode root = m.readTree(new File(realpath + "/" + "config.json"));
             JsonNode secondroot = root.path("Printers");
             for (JsonNode node : secondroot) {
                 PrinterTemplate printerTemplate = new PrinterTemplate();
@@ -57,9 +53,9 @@ public class Engine {
                 ptempmap.put(printerTemplate.getModel(), printerTemplate);
             }
         } catch (JsonGenerationException e) {
-            log.error("Critical json error.",e);
+            log.error("Critical json error.", e);
         } catch (JsonProcessingException e) {
-            log.error("Json processing error.",e);
+            log.error("Json processing error.", e);
         } catch (IOException e) {
             log.error("JSON config file not f ound!");
         }
@@ -68,7 +64,7 @@ public class Engine {
             try {
                 snmpquerier.start();
                 String pmodel = snmpquerier.send(ip, "1.3.6.1.2.1.25.3.2.1.3.1");
-                if (!modelExists(ip, pmodel) || !templateExists(ptempmap,pmodel,ip)){
+                if (!modelExists(ip, pmodel) || !templateExists(ptempmap, pmodel, ip)) {
                     continue;
                 }
                 Printer p = new Printer(ptempmap.get(pmodel), ip, snmpquerier);
@@ -85,7 +81,7 @@ public class Engine {
     }
 
     private boolean templateExists(Map<String, PrinterTemplate> ptempmap, String pmodel, String ip) {
-        if(!ptempmap.containsKey(pmodel)) {
+        if (!ptempmap.containsKey(pmodel)) {
             log.error("Device with " + ip + ", not found in config.json.");
             return false;
         }
