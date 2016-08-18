@@ -4,12 +4,25 @@
 
 <web-app>
     <display-name>PrintsWEBAPP 0.02a</display-name>
+
     <servlet>
         <servlet-name>servlet</servlet-name>
         <servlet-class>servlets.MainServlet</servlet-class>
     </servlet>
+
+    <servlet>
+        <servlet-name>staticservlet</servlet-name>
+        <servlet-class>servlets.StaticServlet</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>servlet</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>staticservlet</servlet-name>
+        <url-pattern>/static/*</url-pattern>
+    </servlet-mapping>
+
 </web-app>

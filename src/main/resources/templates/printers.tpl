@@ -1,131 +1,91 @@
+<!DOCTYPE HTML>
 <html>
 <head>
-    <style>
-        html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
-            margin: 0;
-            padding: 0;
-            border: 0;
-            font-size: 100%;
-            font: inherit;
-            vertical-align: baseline;
-
-        }
-
-        .pricing-table {
-
-            margin: 0 auto;
-            top: 100px;
-            position: relative;
-
-            border-radius
-
-            -webkit-box-shadow: 2px 2px 12px 6px rgba(0,0,0,0.3);
-            -moz-box-shadow: 2px 2px 12px 6px rgba(0,0,0,0.3);
-            box-shadow: 2px 2px 12px 6px rgba(0,0,0,0.3);
-            float: left;
-            margin-left: 50px;
-            margin-bottom: 50px;
-
-            z-index:1;
-        }
-
-        .pricing-table:hover {
-            -webkit-transform: scale(1.2, 1.2);
-            -moz-transform: scale(1.2, 1.2);
-            -o-transform: scale(1.2, 1.2);
-            -ms-transform: scale(1.2, 1.2);
-            transform: scale(1.2, 1.2);
-            z-index:3;
-        }
-        .pricing-table {
-            max-width: 300px;
-        }
-        .pricing-table thead .plan .green {
-            color: white;
-            text-shadow: 1px 1px 0px rgba(255,255,255, .2);
-            background: -moz-linear-gradient(top,  rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 100%); /* FF3.6-15 */
-            background: -webkit-linear-gradient(top,  rgba(0,0,0,1) 0%,rgba(0,0,0,0.8) 100%); /* Chrome10-25,Safari5.1-6 */
-            background: linear-gradient(to bottom,  rgba(0,0,0,1) 0%,rgba(0,0,0,0.8) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#cc000000',GradientType=0 ); /* IE6-9 */
-        }
-        .pricing-table thead .plan th {
-            padding: 15px 0;
-
-        }
-        .pricing-table thead .plan h2 {
-            font-family: 'Arial Black', Arial, Helvetica, sans-serif;
-            font-weight: bold;
-            font-size: 22px;
-            text-transform: uppercase;
-            line-height: 24px;
-        }
-        .pricing-table thead .plan em {
-            font-family: Georgia, Arial, Helvetica, sans-serif;
-            font-style: italic;
-            font-size: 14px;
-            line-height: 16px;
-        }
-
-
-        .pricing-table .clock-icon td {
-            background-position: 0 0;
-        }
-        .pricing-table .clock-icon td, .pricing-table .basket-icon td, .pricing-table .star-icon td, .pricing-table .heart-icon td {
-            background: #ffffff url(../img/icons.png) no-repeat 0 0;
-        }
-        table {
-            border-collapse: collapse;
-            border-spacing: 0;
-        }
-        .pricing-table tbody td {
-            width: 50%;
-            padding-top: 3px;
-            padding-bottom: 3px;
-            border-top: 1px solid #dedede;
-            font-family: Helvetica, Arial, sans-serif;
-            font-size: 11px;
-            color: #828282;
-            text-indent: 15px;
-        }
-
-        .pricing-table tbody td:nth-child(-n+2) {
-            border-top: none;
-        }
-
-        .pricing-table td {
-            position: relative;
-            display: inline-block;
-            vertical-align: text-top;
-        }
-    </style>
     <title>${title}</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css"  href="/static/templates/assets/css/main.css"/>
 </head>
-
 <body>
-    <center><h2>${tablename}</h2></center>
-    <center>
 
-    <#list printers.entrySet() as entry>
-        <table class="pricing-table">
-            <thead>
-                <tr class="plan">
-                    <th class="green" colspan="2">
-                        <h2>${entry.key}</h2>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="clock-icon">
-                <#list entry.value.entrySet() as param>
-                    <tr><td>${param.key}<td>${param.value}
-                </#list>
-                </tr>
-            </tbody>
-        </table>
-    </#list>
+<!-- Header -->
+<header id="header">
+    <div class="inner">
+        <div class="content">
+            <h1>Radius</h1>
 
-    </center>
-    <center>  <input type="submit" name="act" value="SEND"><input type="reset" value="RESET">
-    <center><h2>${error}</h2></center>
+            <h2>A fully app to control the resources of<br/>
+                the central enterprise printers.</h2>
+            <a href="#" class="button big alt"><span>Let's Go</span></a>
+        </div>
+        <a href="#" class="button hidden"><span>Let's Go</span></a>
+    </div>
+</header>
+
+<!-- Main -->
+<div id="main">
+    <div class="inner">
+        <div class="columns">
+
+            <#list printers.entrySet() as entry>
+                <div class="image fit">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th colspan="2">
+                                <h2>${entry.key}</h2>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <#list entry.value.entrySet() as param>
+                                <tr>
+                                    <td>${param.key}
+                                    <td>${param.value}
+                            </#list>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </#list>
+
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer id="footer">
+    <a href="#" class="info fa fa-info-circle"><span>About</span></a>
+
+    <div class="inner">
+        <div class="content">
+            <h3>Vestibulum hendrerit tortor id gravida</h3>
+
+            <p>In tempor porttitor nisl non elementum. Nulla ipsum ipsum, feugiat vitae vehicula vitae, imperdiet sed
+                risus. Fusce sed dictum neque, id auctor felis. Praesent luctus sagittis viverra. Nulla erat nibh,
+                fermentum quis enim ac, ultrices euismod augue. Proin ligula nibh, pretium at enim eget, tempor feugiat
+                nulla.</p>
+        </div>
+        <div class="copyright">
+            <h3>Follow me</h3>
+            <ul class="icons">
+                <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+                <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+                <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+                <li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+            </ul>
+            &copy; Untitled. Design: <a href="https://templated.co">TEMPLATED</a>. Images: <a
+                href="https://unsplash.com/">Unsplash</a>.
+        </div>
+    </div>
+</footer>
+
+<!-- Scripts -->
+<script src=" /static/templates/assets/js/jquery.min.js"></script>
+<script src=" /static/templates/assets/js/skel.min.js"></script>
+<script src=" /static/templates/assets/js/util.js"></script>
+<script src=" /static/templates/assets/js/main.js"></script>
+
 </body>
 </html>

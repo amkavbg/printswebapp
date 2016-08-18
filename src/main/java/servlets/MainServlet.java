@@ -53,6 +53,7 @@ public class MainServlet extends HttpServlet {
         log.debug("Servlet running. Init finish.");
     }
 
+
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -68,7 +69,7 @@ public class MainServlet extends HttpServlet {
             generatedTemplateInput.put("error","Work done.");
             lastRefreshTimestamp = new Date().getTime();
         }
-
+        generatedTemplateInput.put("context",getServletContext().getContextPath());
         response.setContentType("text/html;charset=utf-8");
         try {
             this.tpl.process(generatedTemplateInput, response.getWriter());
@@ -89,13 +90,13 @@ public class MainServlet extends HttpServlet {
             }
         } catch (RuntimeException e) {
             log.error("Critical error populate printer. " + e);
-            input.put("Error", "Critical error populate printer.\n" + e);
+            input.put("Error", "Critical error populate printer." + e);
         } catch (IOException e) {
             log.error("Critical error", e);
         }
 
         input.put("printers", printermap);
-        input.put("error", "working without error");
+        input.put("error", "Working without error");
         return input;
     }
 
