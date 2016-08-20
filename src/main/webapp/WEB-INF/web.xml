@@ -10,19 +10,24 @@
         <servlet-class>servlets.MainServlet</servlet-class>
     </servlet>
 
-    <servlet>
-        <servlet-name>staticservlet</servlet-name>
-        <servlet-class>servlets.StaticServlet</servlet-class>
-    </servlet>
+    <!--<servlet>-->
+        <!--<servlet-name>staticservlet</servlet-name>-->
+        <!--<servlet-class>servlets.StaticServlet</servlet-class>-->
+    <!--</servlet>-->
 
     <servlet-mapping>
         <servlet-name>servlet</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>staticservlet</servlet-name>-->
+        <!--<url-pattern>/static/*</url-pattern>-->
+    <!--</servlet-mapping>-->
+    
     <servlet-mapping>
-        <servlet-name>staticservlet</servlet-name>
-        <url-pattern>/static/*</url-pattern>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/assets/*</url-pattern>
     </servlet-mapping>
 
 </web-app>

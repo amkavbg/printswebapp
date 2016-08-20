@@ -4,7 +4,7 @@
     <title>${title}</title>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" type="text/css"  href="/static/templates/assets/css/main.css"/>
+    <link rel="stylesheet" type="text/css"  href="${context}/assets/css/main.css"/>
 </head>
 <body>
 
@@ -12,13 +12,13 @@
 <header id="header">
     <div class="inner">
         <div class="content">
-            <h1>Radius</h1>
+            <h1>[Printus]</h1>
 
             <h2>A fully app to control the resources of<br/>
                 the central enterprise printers.</h2>
-            <a href="#" class="button big alt"><span>Let's Go</span></a>
+            <a href="#" class="button big alt"><span>Let's go.</span></a>
         </div>
-        <a href="#" class="button hidden"><span>Let's Go</span></a>
+        <a href="#" class="button hidden"><span>Let's go.</span></a>
     </div>
 </header>
 
@@ -60,32 +60,30 @@
 
     <div class="inner">
         <div class="content">
-            <h3>Vestibulum hendrerit tortor id gravida</h3>
+            <h3>Application for survey of printers</h3>
 
-            <p>In tempor porttitor nisl non elementum. Nulla ipsum ipsum, feugiat vitae vehicula vitae, imperdiet sed
-                risus. Fusce sed dictum neque, id auctor felis. Praesent luctus sagittis viverra. Nulla erat nibh,
-                fermentum quis enim ac, ultrices euismod augue. Proin ligula nibh, pretium at enim eget, tempor feugiat
-                nulla.</p>
+            <p>It allows you to track information about printers. Updating data may once in one minute. Version 0.2c. Artemka.</p>
         </div>
         <div class="copyright">
-            <h3>Follow me</h3>
+            <h3>System said :</h3>
+            <h3>${said}</h3>
             <ul class="icons">
-                <li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
-                <li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
-                <li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
-                <li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+
+                <#--<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>-->
+                <#--<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>-->
+                <#--<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>-->
+                <#--<li><a href="#" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>-->
             </ul>
-            &copy; Untitled. Design: <a href="https://templated.co">TEMPLATED</a>. Images: <a
-                href="https://unsplash.com/">Unsplash</a>.
+            &copy; by Tokido. Design: <a href="https://templated.co">TEMPLATED</a>.
         </div>
     </div>
 </footer>
 
 <!-- Scripts -->
-<script src=" /static/templates/assets/js/jquery.min.js"></script>
-<script src=" /static/templates/assets/js/skel.min.js"></script>
-<script src=" /static/templates/assets/js/util.js"></script>
-<script src=" /static/templates/assets/js/main.js"></script>
+<script src=" ${context}/assets/js/jquery.min.js"></script>
+<script src=" ${context}/assets/js/skel.min.js"></script>
+<script src=" ${context}/assets/js/util.js"></script>
+<script src=" ${context}/assets/js/main.js"></script>
 
 </body>
 </html>

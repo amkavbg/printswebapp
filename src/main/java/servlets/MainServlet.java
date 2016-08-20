@@ -49,6 +49,8 @@ public class MainServlet extends HttpServlet {
         this.eng = new Engine(realPath);
 
         generatedTemplateInput = generateTemplateData();
+        generatedTemplateInput.put("context",getServletContext().getContextPath());
+        generatedTemplateInput.put("said", "Servlet running. Init finish.");
         lastRefreshTimestamp = new Date().getTime();
         log.debug("Servlet running. Init finish.");
     }
@@ -66,7 +68,7 @@ public class MainServlet extends HttpServlet {
 
         if (new Date().getTime() - interval > lastRefreshTimestamp) {
             generatedTemplateInput = generateTemplateData();
-            generatedTemplateInput.put("error","Work done.");
+            generatedTemplateInput.put("said","Work done.");
             lastRefreshTimestamp = new Date().getTime();
         }
         generatedTemplateInput.put("context",getServletContext().getContextPath());
@@ -89,14 +91,14 @@ public class MainServlet extends HttpServlet {
                 printermap.put(printer.getIp() + " - " + printer.getValueByKey("NetName"), printer.getParameters());
             }
         } catch (RuntimeException e) {
-            log.error("Critical error populate printer. " + e);
-            input.put("Error", "Critical error populate printer." + e);
+            log.error("Critical error populate printer." + e);
+            input.put("said", "Critical error populate printer." + e);
         } catch (IOException e) {
             log.error("Critical error", e);
         }
 
         input.put("printers", printermap);
-        input.put("error", "Working without error");
+        input.put("said", "Working without error");
         return input;
     }
 
